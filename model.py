@@ -56,7 +56,7 @@ class Liked_location(db.Model):
         return f'<Liked_location id={self.id}>'
 
 
-def connect_to_db(flask_app, db_uri, echo=True):
+def connect_to_db(flask_app, db_uri="postgresql:///soundscape", echo=True):
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
     flask_app.config["SQLALCHEMY_ECHO"] = echo
     flask_app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
