@@ -1,20 +1,21 @@
 <!doctype html>
-<html>
+
+<html lang="en">
   <head>
-    <meta charsset="utf-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>
-        {% block title %}Global Echoes{% end block %}
+        {% block title %}Global Echoes{% endblock %}
     </title>
 
-    {% block head %}{% end block %}
+    {% block head %}{% endblock %}
   </head>
   <body>
-    {% for msg in get_flashed_messages() %} 
+    <!-- {% for msg in get_flashed_messages() %} 
       <p class="flash-msg">
         {{ msg }}
       </p>
-    {% end for %} 
+    {% endfor %}  -->
 
     {% block body %}{% endblock %} 
 

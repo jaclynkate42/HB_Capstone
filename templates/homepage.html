@@ -1,21 +1,21 @@
-{% extendss 'baes.html' %} 
+{% extends 'base.html' %} 
 
 {% block title %}Welcome to Global Echoes{% endblock %} 
 
-{% block content %} 
-<div class="container">
+{% block body %} 
+<!-- <div class="container">
   <div class="row">
-    <div class="col-7">
+    <div class="col-7"> -->
       <div id="welcome"> 
         <h2>Welcome to Global Echoes</h2>
         <p>Please enter a desintation to begin your audial exploration:</p>
     </div>
-  </div>
-</div>
+  <!-- </div>
+</div> -->
 
   <script src="/static/globalechoes.js"></script>
   <script
     async
-    src="https://maps.googleapis.com/... &callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key={{google_key}}&callback=CALLBACK">
   </script>
-{% end block %} 
+{% endblock %} 

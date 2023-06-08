@@ -1,6 +1,7 @@
 """Server for global echoes app."""
 from flask import (Flask, render_template, request, flash, session, redirect)
 from model import connect_to_db, db
+import os 
 # import crud
 
 from jinja2 import StrictUndefined
@@ -9,12 +10,13 @@ app = Flask(__name__)
 app.secret_key = "dev"
 app.jinja_env.undefined = StrictUndefined
 
+API_KEY = os.environ['GOOGLE_MAPS_KEY']
 
 @app.route('/')
 def homepage():
     """View homepage"""
 
-    return render_template('homepage.html')
+    return render_template('homepage.html', google_key=API_KEY)
 
 # @app.route('/login', methods=['POST'])
 # def login(): 
