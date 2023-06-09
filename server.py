@@ -24,8 +24,6 @@ def get_sounds():
 
     api_key = "FREESOUND_API_KEY"
     endpoint = "https://freesound.org/apiv2/search/text/"
-    latitude = places.geometry.location.lat
-    longitude = places.geometry.location.lng
     max_distance = 80
 
     geotag_filter = f"{{!geofilt sfield=geotag pt={latitude},{longitude} d={max_distance}}}"

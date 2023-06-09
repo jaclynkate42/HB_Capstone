@@ -1,42 +1,36 @@
 
-  // 'use strict';
+// 'use strict';
 
-  // // We use a function declaration for initMap because we actually *do* need
-  // // to rely on value-hoisting in this circumstance.
-  // function initMap() {
-  //   const sfBayCoords = {
-  //     lat: 37.601773,
-  //     lng: -122.20287,
-  //   };
-  
-  //   const basicMap = new google.maps.Map(document.querySelector('#map'), {
-  //     center: { lat: -33.8688, lng: 151.2195 },
-  //     zoom: 1,
-  //   });
-  // }
-
-  // This example adds a search box to a map, using the Google Place Autocomplete
+// This example adds a search box to a map, using the Google Place Autocomplete
 // feature. People can enter geographical searches. The search box will return a
 // pick list containing a mix of places and predicted search terms.
 // This example requires the Places library. Include the libraries=places
 // parameter when you first load the API. For example:
 // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+function goToStreetView(lat, lng) {
+  const streetViewUrl = `https://www.google.com/maps?q=&layer=c&cbll=${lat},${lng}`;
+  window.open(streetViewUrl, '_blank');
+  // Use the latitude and longitude for the Freesound API search
+  searchSoundsByLocation(lat, lng);
+}
+
 function initAutocomplete() {
-  const myStyles =[
+  const myStyles = [
     {
-        featureType: "poi",
-        elementType: "labels",
-        stylers: [
-              { visibility: "off" }
-        ]
+      featureType: "poi",
+      elementType: "labels",
+      stylers: [
+        { visibility: "off" }
+      ]
     }
-];
-  
+  ];
+
   const map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 0, lng: 0 },
     zoom: 2.5,
     styles: myStyles,
-    // mapTypeId: "roadmap",
+    mapTypeId: "satellite",
   });
   // Create the search box and link it to the UI element.
   const input = document.getElementById("pac-input");
@@ -84,14 +78,32 @@ function initAutocomplete() {
       };
 
       // Create a marker for each place.
-      markers.push(
-        new google.maps.Marker({
+        const marker = new google.maps.Marker({
           map,
           icon,
           title: place.name,
           position: place.geometry.location,
         })
-      );
+  
+      markers.push(marker);
+
+      const markerInfo = `
+        <h1>${marker.title}</h1>
+        <p>
+          Click here to enter street view
+        </p>
+        <a href="#" onclick="goToStreetView('${marker.position.lat()}', '${marker.position.lng()}')">Go to street view</a>
+      `;
+
+      const infoWindow = new google.maps.InfoWindow({
+        content: markerInfo,
+        maxWidth: 200,
+      });
+
+      marker.addListener('click', () => {
+        infoWindow.open(map, marker);
+      });
+
       if (place.geometry.viewport) {
         // Only geocodes have viewport.
         bounds.union(place.geometry.viewport);
@@ -101,6 +113,26 @@ function initAutocomplete() {
     });
     map.fitBounds(bounds);
   });
+
+  // for (const marker of markers) {
+  //   const markerInfo = `
+  //     <h1>${marker.title}</h1>
+  //     <p>
+  //       Located at: <code>${marker.position.lat()}</code>,
+  //       <code>${marker.position.lng()}</code>
+  //     </p>
+  //   `;
+
+  //   const infoWindow = new google.maps.InfoWindow({
+  //     content: "TEST",
+  //     maxWidth: 200,
+  //   });
+
+  //   marker.addListener('click', () => {
+  //     infoWindow.open(basicMap, marker);
+  //   });
+  // }
 }
+
 
 window.initAutocomplete = initAutocomplete;
