@@ -18,6 +18,19 @@ def homepage():
 
     return render_template('homepage.html', google_key=API_KEY)
 
+@app.route('/searchresults')
+def get_sounds():
+    """Search for sounds on Freesound"""
+
+    api_key = "FREESOUND_API_KEY"
+    endpoint = "https://freesound.org/apiv2/search/text/"
+    latitude = places.geometry.location.lat
+    longitude = places.geometry.location.lng
+    max_distance = 80
+
+    geotag_filter = f"{{!geofilt sfield=geotag pt={latitude},{longitude} d={max_distance}}}"
+    url = f"{endpoint}?filter={geotag_filter}&token={api_key}"
+
 # @app.route('/login', methods=['POST'])
 # def login(): 
 #     email = request.form.get('email')
