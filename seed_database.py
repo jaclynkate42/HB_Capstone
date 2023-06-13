@@ -1,7 +1,7 @@
 """Script to seed database."""
 import os
 import json
-# import random import choice, randint
+from random import choice, randint
 from datetime import datetime
 
 import crud
@@ -13,3 +13,6 @@ os.system('createdb soundscape')
 
 model.connect_to_db(server.app)
 model.db.create_all()
+
+model.db.session.add_all()
+model.db.session.commit()

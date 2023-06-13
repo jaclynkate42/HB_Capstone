@@ -1,18 +1,23 @@
 
 // 'use strict';
 
-// This example adds a search box to a map, using the Google Place Autocomplete
-// feature. People can enter geographical searches. The search box will return a
-// pick list containing a mix of places and predicted search terms.
-// This example requires the Places library. Include the libraries=places
-// parameter when you first load the API. For example:
-// <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
-
 function goToStreetView(lat, lng) {
   const streetViewUrl = `https://www.google.com/maps?q=&layer=c&cbll=${lat},${lng}`;
   window.open(streetViewUrl, '_blank');
-  // Use the latitude and longitude for the Freesound API search
-  searchSoundsByLocation(lat, lng);
+}
+
+function searchSoundsByLocation(latitude, longitude) {
+}
+
+function handleSoundResults(response, latitude, longitude) {
+  // Generate the HTML content for the info window
+  let content = `<h1>Explore soundscapes here:</h1>`;
+  // Add the sound results to the info window content
+  for (const sound of response) {
+    content += `<p>${sound.name}</p>`;
+  }
+
+  return content
 }
 
 function initAutocomplete() {
@@ -49,16 +54,6 @@ function initAutocomplete() {
   searchBox.addListener("places_changed", () => {
     const places = searchBox.getPlaces();
 
-    if (places.length == 0) {
-      return;
-    }
-
-    // Clear out the old markers.
-    markers.forEach((marker) => {
-      marker.setMap(null);
-    });
-    markers = [];
-
     // For each place, get the icon, name and location.
     const bounds = new google.maps.LatLngBounds();
 
@@ -78,30 +73,57 @@ function initAutocomplete() {
       };
 
       // Create a marker for each place.
-        const marker = new google.maps.Marker({
-          map,
-          icon,
-          title: place.name,
-          position: place.geometry.location,
-        })
-  
+      const marker = new google.maps.Marker({
+        map,
+        icon,
+        title: place.name,
+        position: place.geometry.location,
+      })
+
       markers.push(marker);
 
-      const markerInfo = `
-        <h1>${marker.title}</h1>
-        <p>
-          Click here to enter street view
-        </p>
-        <a href="#" onclick="goToStreetView('${marker.position.lat()}', '${marker.position.lng()}')">Go to street view</a>
-      `;
-
-      const infoWindow = new google.maps.InfoWindow({
-        content: markerInfo,
-        maxWidth: 200,
-      });
-
       marker.addListener('click', () => {
-        infoWindow.open(map, marker);
+        if (places.length > 0) {
+          const place = places[0];
+
+          // Retrieve the latitude and longitude from the selected place
+          const latitude = place.geometry.location.lat();
+          const longitude = place.geometry.location.lng();
+
+          // Use the latitude and longitude for the Freesound API search
+          searchSoundsByLocation(latitude, longitude);
+          const url = '/search-sounds';
+          const data = new URLSearchParams();
+          data.append('latitude', latitude);
+          data.append('longitude', longitude);
+
+          fetch(url, {
+            method: 'POST',
+            body: data,
+          })
+            .then(response => response.text())
+            .then(response => {
+              // Process the server response and handle the retrieved sounds
+              const location_sound = handleSoundResults(response, latitude, longitude);
+              const markerInfo = `
+            <h1>${marker.title}</h1>
+            <p>
+              ${location_sound}
+            </p>
+            <a href="#" onclick="goToStreetView('${marker.position.lat()}', '${marker.position.lng()}')">Go to street view</a>
+          `;
+
+              const infoWindow = new google.maps.InfoWindow({
+                content: markerInfo,
+                maxWidth: 200,
+              });
+              infoWindow.open(map, marker);
+            })
+            .catch(error => {
+              console.log('Error:', error);
+            });
+
+        }
       });
 
       if (place.geometry.viewport) {
@@ -112,27 +134,16 @@ function initAutocomplete() {
       }
     });
     map.fitBounds(bounds);
+
   });
 
-  // for (const marker of markers) {
-  //   const markerInfo = `
-  //     <h1>${marker.title}</h1>
-  //     <p>
-  //       Located at: <code>${marker.position.lat()}</code>,
-  //       <code>${marker.position.lng()}</code>
-  //     </p>
-  //   `;
+  // Clear out the old markers.
+  markers.forEach((marker) => {
+    marker.setMap(null);
+  });
+  markers = [];
 
-  //   const infoWindow = new google.maps.InfoWindow({
-  //     content: "TEST",
-  //     maxWidth: 200,
-  //   });
-
-  //   marker.addListener('click', () => {
-  //     infoWindow.open(basicMap, marker);
-  //   });
-  // }
-}
+};
 
 
 window.initAutocomplete = initAutocomplete;

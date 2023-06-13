@@ -1,7 +1,8 @@
 """Server for global echoes app."""
-from flask import (Flask, render_template, request, flash, session, redirect)
+from flask import (Flask, render_template, request, flash, session, redirect,jsonify)
 from model import connect_to_db, db
 import os 
+import requests
 # import crud
 
 from jinja2 import StrictUndefined
@@ -11,6 +12,7 @@ app.secret_key = "dev"
 app.jinja_env.undefined = StrictUndefined
 
 API_KEY = os.environ['GOOGLE_MAPS_KEY']
+FS_API_KEY = os.environ['FREESOUND_API_KEY']
 
 @app.route('/')
 def homepage():
@@ -18,54 +20,61 @@ def homepage():
 
     return render_template('homepage.html', google_key=API_KEY)
 
-@app.route('/searchresults')
-def get_sounds():
-    """Search for sounds on Freesound"""
+@app.route('/create_account')
+def create_user():
+    """Create User Account"""
 
-    api_key = "FREESOUND_API_KEY"
-    endpoint = "https://freesound.org/apiv2/search/text/"
-    max_distance = 80
+    return render_template('create_account.html')
 
-    geotag_filter = f"{{!geofilt sfield=geotag pt={latitude},{longitude} d={max_distance}}}"
-    url = f"{endpoint}?filter={geotag_filter}&token={api_key}"
+@app.route('/login')
+def create_user():
+    """Login"""
 
-# @app.route('/login', methods=['POST'])
-# def login(): 
-#     email = request.form.get('email')
-#     password = request.form.get('password')
+    return render_template('login.html')
 
-#     user = crud.get_user_by_email(email)
-#     if user == None or user.password != password:
-#         flash('THAT EMAIL & PASSWORD COMBO IS INCORRECT')
-#     else: 
-#         session['user_email'] = user.email
-#         flash('WELCOME')
-#     return redirect('/user_profile')
+@app.route('/user_profile')
+def user_profile():
+    """View User Profile"""
 
-# @app.route("/login", methods=["POST"])
-# def register_user():
-#     """Create a new user."""
-#     email = request.form.get('email')
-#     password = request.form.get('password')
+    return render_template('user_profile.html')
 
-#     user = crud.get_user_by_email(email)
+@app.route('/search-sounds', methods=['POST'])
+def search_sounds():
+    # Retrieve the latitude and longitude values from the request
+    latitude = request.form.get('latitude')
+    longitude = request.form.get('longitude')
 
-#     if user: 
-#         flash('THAT EMAIL IS ALREADY IN USE. TRYING SIGNING IN.')
-#     else:  
-#         new_user = crud.create_user(email, password)
-#         db.session.add(new_user)
-#         db.session.commit()
-#         flash("Account created! Please log in.")
+    # Make a request to the Freesound API to search for sounds by location
+    api_url = 'https://freesound.org/apiv2/search/text/'
+    headers = {
+        'Authorization': f'Token {FS_API_KEY}'
+    }
+    params = {
+        'query': 'ambient soundscape',
+        'filter': f'{{!geofilt sfield=geotag pt={latitude},{longitude} d=60}}'
+        # 'fields': 'id,name'
+    }
+    print ('starting request')
+    try:
+        response = requests.get(api_url, headers=headers, params=params)
+        response.raise_for_status()
+        sounds = response.json()['results']
+    except requests.exceptions.RequestException as e:
+        return jsonify(error=str(e))
+    print
 
-#     return redirect("/")
+    # Extract relevant information from the API response
+    sound_results = []
+    for sound in sounds:
+        sound_info = {
+            'id': sound['id'],
+            'name': sound['name']
+        }
+        sound_results.append(sound_info)
 
-# @app.route('/user_profile')
+    # Return the sound results as JSON
+    return jsonify(sound_results)
 
-# @app.route('/search_results')
-
-# @app.route('/location/<location_id>')
-# # """streetview of specific location"""
 
 if __name__ == "__main__":
     connect_to_db(app)
