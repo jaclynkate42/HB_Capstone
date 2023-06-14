@@ -2,5 +2,6 @@
 {% block title %}Earth Echoes Profile{% endblock %}
 
 {% block body %}
-  <h1>Hello ${{first_name}}</h1>
+  <h1>Hello {{ user.first_name }}</h1>
+  <h2> Saved Locations: </h2>
 {% endblock %}

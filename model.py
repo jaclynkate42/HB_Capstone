@@ -28,6 +28,7 @@ class Location(db.Model):
     """A location."""
 
     __tablename__ = "locations"
+    # change to lat lng to match google api. use Google maps location ID as prrimary key, check if string or number
 
     location_id = db.Column(db.Integer,
                         autoincrement=True,

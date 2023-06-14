@@ -8,24 +8,28 @@ def create_user(email, password, user_name, first_name, last_name):
     user = User(email=email, password=password, user_name=user_name, first_name=first_name, last_name=last_name)
 
     return user
+def get_user_by_email(email):
+    """Return a user by email."""
 
-def create_location(location_name, longitude, latitude):
-    """Create and return a new location."""
+    return User.query.filter(User.email == email).first()
 
-    location = Location(location_name=location_name, longitude=longitude, latitude=latitude)
+# def create_location(location_name, longitude, latitude):
+#     """Create and return a new location."""
 
-    return location
+#     location = Location(location_name=location_name, longitude=longitude, latitude=latitude)
 
-def create_liked_location(user_id, location_id):
-    """Create a new entry in the liked_locations table."""
-    liked_location = Liked_location(user_id=user_id, location_id=location_id)
-    return liked_location
+#     return location
 
-def get_liked_locations_by_user(user_id):
-    """Get the liked locations for a given user."""
-    liked_locations = Liked_location.query.filter_by(user_id=user_id).all()
-    return liked_locations
+# def create_liked_location(user_id, location_id):
+#     """Create a new entry in the liked_locations table."""
+#     liked_location = Liked_location(user_id=user_id, location_id=location_id)
+#     return liked_location
 
-# if __name__ == '__main__':
-#     from server import app
-#     connect_to_db(app)
+# def get_liked_locations_by_user(user_id):
+#     """Get the liked locations for a given user."""
+#     liked_locations = Liked_location.query.filter_by(user_id=user_id).all()
+#     return liked_locations
+
+if __name__ == '__main__':
+    from server import app
+    connect_to_db(app)

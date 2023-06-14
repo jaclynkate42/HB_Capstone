@@ -101,9 +101,10 @@ function initAutocomplete() {
             method: 'POST',
             body: data,
           })
-            .then(response => response.text())
+            .then(response => response.json())
             .then(response => {
               // Process the server response and handle the retrieved sounds
+              console.log(response)
               const location_sound = handleSoundResults(response, latitude, longitude);
               const markerInfo = `
             <h1>${marker.title}</h1>
