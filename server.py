@@ -83,15 +83,17 @@ def search_sounds():
     # Retrieve the latitude and longitude values from the request
     latitude = request.form.get('latitude')
     longitude = request.form.get('longitude')
+    location_name = request.form.get('location_name')
 
     # Make a request to the Freesound API to search for sounds by location
     api_url = 'https://freesound.org/apiv2/search/text/'
     headers = {
         'Authorization': f'Token {FS_API_KEY}'
     }
+    query = f'ambient background soundscape {location_name}'
     params = {
-        'query': 'ambient soundscape',
-        'filter': f'{{!geofilt sfield=geotag pt={latitude},{longitude} d=60}}',
+        'query': query,
+        'filter': f'{{!geofilt sfield=geotag pt={latitude},{longitude} d=16}}',
         'fields': 'id,name,previews'
     }
     
@@ -114,6 +116,41 @@ def search_sounds():
 
     # Return the sound results as JSON
     return jsonify(sound_results)
+
+@app.route('/save_location', methods=['POST'])
+def save_location():
+    """Save a location for a user."""
+
+    # Retrieve the user's email and location ID from the request
+    email = session.get('user_email')
+    location_id = request.form.get('location_id')
+
+    # Retrieve the user and location objects
+    user = crud.get_user_by_email(email)
+    location = crud.get_location_by_id(location_id)
+
+    # Check if the user and location exist
+    if user is not None and location is not None:
+        # Add the location to the user's locations list
+        user.locations.append(location)
+        db.session.commit()
+        flash("Location saved successfully.")
+        return redirect('/user_profile')
+    else:
+        flash("Please log in to save location.")
+        return redirect('/login')
+    
+@app.route('/streetview', methods=['POST'])
+def streetview():
+    """View streetview"""
+    latitude = request.form.get('location_lat')
+    longitude = request.form.get('location_lng')
+    location_name = request.form.get('location_name')
+    print(latitude)
+
+    return render_template('streetview.html', google_key=API_KEY, 
+                           latitude=latitude, longitude=longitude, location_name=location_name)
+
 
 
 if __name__ == "__main__":

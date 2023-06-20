@@ -1,42 +1,26 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 
 {% block head %}
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-  <link rel="stylesheet" href="/static/CSS/maps.css"/>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<link rel="stylesheet" href="/static/CSS/maps.css" />
 
 {% endblock %}
 
-{% block body %} 
-<!-- <div class="container">
-  <div class="row">
-    <div class="col-7"> -->
-      <div id="welcome"> 
-        <h2>Welcome to Global Echoes</h2>
-        <h3>Navigation</h3>
-          <ul>
-            <li><a href="/create_account">Create Account</a></li>
-            <li><a href="/login">Login</a></li>
-          </ul>
+{% block body %}
 
-        
-        <p>Please enter a destination to begin your audial exploration:</p>
-    </div>
-  <!-- </div>
-</div> -->
+<div id="welcome">
+  <h2>Welcome to Global Echoes</h2>
+  <p>Please enter a destination to begin your audial exploration:</p>
+</div>
 
 <section class="map">
-    <input
-      id="pac-input"
-      class="controls"
-      type="text"
-      placeholder="Search Box"
-    />
-    <div id="map"></div>
-  </section>
+  <input id="pac-input" class="controls" type="text" placeholder="Search Box" />
+  <div id="map"></div>
+</section>
 
-  <script src="/static/globalechoes.js"></script>
-  <script
-    async
-    src="https://maps.googleapis.com/maps/api/js?key={{google_key}}&callback=initAutocomplete&libraries=places&v=weekly">
+<script src="/static/globalechoes.js"></script>
+<script async
+  src="https://maps.googleapis.com/maps/api/js?key={{google_key}}&callback=initAutocomplete&libraries=places&v=weekly">
   </script>
-{% endblock %} 
+
+{% endblock %}

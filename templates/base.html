@@ -1,24 +1,39 @@
 <!doctype html>
 
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>
-        {% block title %}Global Echoes{% endblock %}
-    </title>
 
-    {% block head %}{% endblock %}
-  </head>
-  <body>
-    {% for msg in get_flashed_messages() %} 
-      <p class="flash-msg">
-        {{ msg }}
-      </p>
-    {% endfor %}
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>
+    {% block title %}Global Echoes{% endblock %}
+  </title>
 
-    {% block body %}{% endblock %} 
+  {% block head %}{% endblock %}
+</head>
 
-    {% block after_body %}{% endblock %} 
-  </body>
+<body>
+
+  <h3>Navigation</h3>
+  <ul>
+    {% if session.user_email %}
+    <li><a href="/">Earth Echoes</a></li>
+    <li><a href="/user_profile">Your Profile</a></li>
+    {% else %}
+    <li><a href="/">Earth Echoes</a></li>
+    <li><a href="/login">Login</a></li>
+    {% endif %}
+  </ul>
+
+  {% for msg in get_flashed_messages() %}
+  <p class="flash-msg">
+    {{ msg }}
+  </p>
+  {% endfor %}
+
+  {% block body %}{% endblock %}
+
+  {% block after_body %}{% endblock %}
+</body>
+
 </html>

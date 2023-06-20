@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Street View split-map-panes</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<link rel="stylesheet" href="/static/CSS/maps.css" />
+{% endblock %}
+
+{% block body %}
+
+<div id="page detail">
+    <h2>Enjoy your stroll through {{ location_name }}</h2>
+</div>
+
+<body>
+    <div id="map"></div>
+    <div id="pano"></div>
+
+    <!-- <div id="streetview-container"></div> -->
+
+    <script src="/static/streetview.js"></script>
+
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key={{google_key}}&callback=goToStreetView&v=weekly&latitudet={{latitude}}&longitude={{longitude}}"
+      defer
+    ></script>
+
+    <!-- <script async
+        src="https://maps.googleapis.com/maps/api/js?key={{google_key}}&callback=goToStreetView&libraries=streetview&v=weekly"></script> -->
+    {% endblock %}

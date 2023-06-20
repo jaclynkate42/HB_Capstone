@@ -2,21 +2,22 @@
 {% block title %}Log In{% endblock %}
 
 {% block body %}
-  <h1>Log In To Your Account</h1>
+<h1>Log In To Your Account</h1>
 
-  <form action="/login" method="POST">
+<form action="/login" method="POST">
     <p>
-      <label for="email">Email</label>
-      <input type="text" id="email" name="email">
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email">
     </p>
 
     <p>
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password">
     </p>
 
     <p>
-      <input type="submit" value="Log In">
+        <input type="submit" value="Log In">
     </p>
-  </form>
+    <a href="/create_account">Don't have an account? Create one here!</a>
+</form>
 {% endblock %}

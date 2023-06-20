@@ -1,10 +1,5 @@
-
+// JS for Earth Echoes homepage 
 // 'use strict';
-
-function goToStreetView(lat, lng) {
-  const streetViewUrl = `https://www.google.com/maps?q=&layer=c&cbll=${lat},${lng}`;
-  window.open(streetViewUrl, '_blank');
-}
 
 function searchSoundsByLocation(latitude, longitude) {
 }
@@ -15,6 +10,8 @@ function handleSoundResults(response, latitude, longitude) {
   // Add the sound results to the info window content
   for (const sound of response) {
     content += `<p>${sound.name}</p>`;
+    content += `<audio controls> <source src="${sound.playable_link}"></audio>`
+    // content += `<p><a href="${sound.playable_link}" target="_blank">${sound.name}</a></p>`;
   }
 
   return content
@@ -89,13 +86,15 @@ function initAutocomplete() {
           // Retrieve the latitude and longitude from the selected place
           const latitude = place.geometry.location.lat();
           const longitude = place.geometry.location.lng();
+          const location_name = place.name;
 
           // Use the latitude and longitude for the Freesound API search
-          searchSoundsByLocation(latitude, longitude);
+          searchSoundsByLocation(latitude, longitude, location_name);
           const url = '/search-sounds';
           const data = new URLSearchParams();
           data.append('latitude', latitude);
           data.append('longitude', longitude);
+          data.append('location_name', location_name)
 
           fetch(url, {
             method: 'POST',
@@ -107,16 +106,27 @@ function initAutocomplete() {
               console.log(response)
               const location_sound = handleSoundResults(response, latitude, longitude);
               const markerInfo = `
-            <h1>${marker.title}</h1>
-            <p>
-              ${location_sound}
-            </p>
-            <a href="#" onclick="goToStreetView('${marker.position.lat()}', '${marker.position.lng()}')">Go to street view</a>
-          `;
+              <h1>${marker.title}</h1>
+              <p>
+                <form action="/save_location" method="post">
+                  <input type="hidden" name="location_id" value="{{ location.location_id }}">
+                  <button type="submit">Save Location</button>
+                </form>
+              <p>
+              <form action="/streetview" method="post">
+                <input type="hidden" name="location_name" value="${ place.name }">
+                <input type="hidden" name="location_lat" value="${ place.geometry.location.lat() }">
+                <input type="hidden" name="location_lng" value="${ place.geometry.location.lng() }">
+                <button type="submit">Explore Street View</button>
+              </form>
+              </p>
+
+          ${ location_sound }
+        `;
 
               const infoWindow = new google.maps.InfoWindow({
                 content: markerInfo,
-                maxWidth: 200,
+                maxWidth: 300,
               });
               infoWindow.open(map, marker);
             })
@@ -146,5 +156,10 @@ function initAutocomplete() {
 
 };
 
+function initStreetView() {
+  // Initialize the Street View component here
+  // You can use the Google Maps JavaScript API to interact with Street View
+  // For example, you can use the `pano` option to specify the initial panorama ID
+}
 
 window.initAutocomplete = initAutocomplete;

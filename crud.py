@@ -8,17 +8,25 @@ def create_user(email, password, user_name, first_name, last_name):
     user = User(email=email, password=password, user_name=user_name, first_name=first_name, last_name=last_name)
 
     return user
+
 def get_user_by_email(email):
     """Return a user by email."""
 
     return User.query.filter(User.email == email).first()
 
-# def create_location(location_name, longitude, latitude):
-#     """Create and return a new location."""
+def create_location(location_name, longitude, latitude):
+    """Create and return a new location."""
 
-#     location = Location(location_name=location_name, longitude=longitude, latitude=latitude)
+    location = Location(location_name=location_name, longitude=longitude, latitude=latitude)
+    db.session.add(location)
+    db.session.commit()
 
-#     return location
+    return location
+
+def get_location_by_id(location_id):
+    """Return a location by its ID."""
+
+    return Location.query.get(location_id)
 
 # def create_liked_location(user_id, location_id):
 #     """Create a new entry in the liked_locations table."""
