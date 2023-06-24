@@ -1,4 +1,4 @@
-"""Models for movie ratings app."""
+"""Models for golbal echoes app."""
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -28,10 +28,8 @@ class Location(db.Model):
     """A location."""
 
     __tablename__ = "locations"
-    # change to lat lng to match google api. use Google maps location ID as prrimary key, check if string or number
 
-    location_id = db.Column(db.Integer,
-                        autoincrement=True,
+    location_id = db.Column(db.String,
                         primary_key=True)
     location_name = db.Column(db.String)
     longitude = db.Column(db.Numeric(12, 9))
@@ -50,7 +48,7 @@ class Liked_location(db.Model):
     id = db.Column(db.Integer,
                         autoincrement=True,
                         primary_key=True)
-    location_id = db.Column(db.Integer, db.ForeignKey("locations.location_id"), nullable=False)
+    location_id = db.Column(db.String, db.ForeignKey("locations.location_id"), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
 
     def __repr__(self):

@@ -1,7 +1,15 @@
+<!-- user_profile.html -->
+
 {% extends 'base.html' %}
 {% block title %}Earth Echoes Profile{% endblock %}
 
 {% block body %}
+
 <h1>Hello {{ user.first_name }}</h1>
 <h2> Saved Locations: </h2>
+<ul>
+  {% for location in liked_locations %}
+  <li>{{ location.location_name }}</li>
+  {% endfor %}
+</ul>
 {% endblock %}

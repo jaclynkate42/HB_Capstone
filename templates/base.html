@@ -1,3 +1,5 @@
+<!-- base.html -->
+
 <!doctype html>
 
 <html lang="en">
@@ -16,9 +18,10 @@
 
   <h3>Navigation</h3>
   <ul>
-    {% if session.user_email %}
+    {% if session.get('user_email') %}
     <li><a href="/">Earth Echoes</a></li>
     <li><a href="/user_profile">Your Profile</a></li>
+    <li><a href="/logout">Logout</a></li>
     {% else %}
     <li><a href="/">Earth Echoes</a></li>
     <li><a href="/login">Login</a></li>

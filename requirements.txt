@@ -7,3 +7,8 @@ MarkupSafe==2.0.1
 psycopg2-binary==2.9.3
 SQLAlchemy==1.4.18
 Werkzeug==2.0.1
+
+
+# function goToStreetView() {
+#             const streetViewUrl = `https://www.google.com/maps?q=&layer=c&cbll=${latitude},${longitude}`;
+#             window.open(streetViewUrl, '_blank');

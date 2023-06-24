@@ -1,6 +1,13 @@
 // JS for Earth Echoes homepage 
 // 'use strict';
 
+function goToStreetView(lat, lng) {
+  const streetViewUrl = `https://www.google.com/maps?q=&layer=c&cbll=${lat},${lng}`;
+  window.open(streetViewUrl, '_blank');
+  // Use the latitude and longitude for the Freesound API search
+  searchSoundsByLocation(lat, lng);
+}
+
 function searchSoundsByLocation(latitude, longitude) {
 }
 
@@ -18,20 +25,20 @@ function handleSoundResults(response, latitude, longitude) {
 }
 
 function initAutocomplete() {
-  const myStyles = [
-    {
-      featureType: "poi",
-      elementType: "labels",
-      stylers: [
-        { visibility: "off" }
-      ]
-    }
-  ];
+  // const myStyles = [
+  //   {
+  //     featureType: "poi",
+  //     elementType: "labels",
+  //     stylers: [
+  //       { visibility: "off" }
+  //     ]
+  //   }
+  // ];
 
   const map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 0, lng: 0 },
     zoom: 2.5,
-    styles: myStyles,
+    // styles: myStyles,
     mapTypeId: "satellite",
   });
   // Create the search box and link it to the UI element.
@@ -96,46 +103,44 @@ function initAutocomplete() {
           data.append('longitude', longitude);
           data.append('location_name', location_name)
 
-          fetch(url, {
-            method: 'POST',
-            body: data,
-          })
-            .then(response => response.json())
-            .then(response => {
-              // Process the server response and handle the retrieved sounds
-              console.log(response)
-              const location_sound = handleSoundResults(response, latitude, longitude);
-              const markerInfo = `
+            fetch(url, {
+              method: 'POST',
+              body: data,
+            })
+              .then(response => response.json())
+              .then(response => {
+                // Process the server response and handle the retrieved sounds
+                console.log(response)
+                const location_sound = handleSoundResults(response, latitude, longitude);
+
+                const markerInfo = `
               <h1>${marker.title}</h1>
               <p>
                 <form action="/save_location" method="post">
-                  <input type="hidden" name="location_id" value="{{ location.location_id }}">
+                  <input type="hidden" name="location_id" value="${place.place_id}">
+                  <input type="hidden" name="location_name" value="${place.name}">
+                  <input type="hidden" name="location_lat" value="${place.geometry.location.lat()}">
+                  <input type="hidden" name="location_lng" value="${place.geometry.location.lng()}">
                   <button type="submit">Save Location</button>
                 </form>
-              <p>
-              <form action="/streetview" method="post">
-                <input type="hidden" name="location_name" value="${ place.name }">
-                <input type="hidden" name="location_lat" value="${ place.geometry.location.lat() }">
-                <input type="hidden" name="location_lng" value="${ place.geometry.location.lng() }">
-                <button type="submit">Explore Street View</button>
-              </form>
-              </p>
 
-          ${ location_sound }
+                <button type="button" onclick="goToStreetView(${place.geometry.location.lat()}, ${place.geometry.location.lng()})">Explore Street View</button>
+
+          ${location_sound}
         `;
 
-              const infoWindow = new google.maps.InfoWindow({
-                content: markerInfo,
-                maxWidth: 300,
+                const infoWindow = new google.maps.InfoWindow({
+                  content: markerInfo,
+                  maxWidth: 300,
+                });
+                infoWindow.open(map, marker);
+              })
+              .catch(error => {
+                console.log('Error:', error);
               });
-              infoWindow.open(map, marker);
-            })
-            .catch(error => {
-              console.log('Error:', error);
-            });
 
-        }
-      });
+          }
+        });
 
       if (place.geometry.viewport) {
         // Only geocodes have viewport.
@@ -155,11 +160,5 @@ function initAutocomplete() {
   markers = [];
 
 };
-
-function initStreetView() {
-  // Initialize the Street View component here
-  // You can use the Google Maps JavaScript API to interact with Street View
-  // For example, you can use the `pano` option to specify the initial panorama ID
-}
 
 window.initAutocomplete = initAutocomplete;

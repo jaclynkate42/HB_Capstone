@@ -1,0 +1,8 @@
+<p>
+    <form action="/streetview" method="post">
+      <input type="hidden" name="location_name" value="${place.name}">
+      <input type="hidden" name="location_lat" value="${place.geometry.location.lat()}">
+      <input type="hidden" name="location_lng" value="${place.geometry.location.lng()}">
+      <button type="submit">Explore Street View</button>
+    </form>
+    </p>

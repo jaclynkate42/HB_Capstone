@@ -1,6 +1,6 @@
 """Server for global echoes app."""
 from flask import (Flask, render_template, request, flash, session, redirect,jsonify)
-from model import connect_to_db, db
+from model import connect_to_db, db, User, Location, Liked_location
 import os 
 import requests
 import crud
@@ -34,13 +34,13 @@ def handle_register_form():
     password = request.form.get("password")
     first_name = request.form.get("first_name")
     last_name = request.form.get("last_name")
-    username = request.form.get("username")
+    user_name = request.form.get("user_name")
     user = crud.get_user_by_email(email)
     
     if user:
         flash("An account with that email already exsits. Please log in.")
     else:
-        user = crud.create_user(email, password, username, first_name, last_name)
+        user = crud.create_user(email, password, user_name, first_name, last_name)
         db.session.add(user)
         db.session.commit()
         flash("Account created! Please log in.")
@@ -74,8 +74,13 @@ def user_profile():
 
     logged_in_email = session.get("user_email")
     user = crud.get_user_by_email(logged_in_email)
+    user_id = User.user_id
+    liked_locations = user.locations
+    # liked_locations = Liked_location.query.filter_by(user_id=user_id).all()
+    print(liked_locations)
 
-    return render_template('user_profile.html', user=user)
+
+    return render_template('user_profile.html', user=user, liked_locations=liked_locations)
 
 
 @app.route('/search-sounds', methods=['POST'])
@@ -124,6 +129,9 @@ def save_location():
     # Retrieve the user's email and location ID from the request
     email = session.get('user_email')
     location_id = request.form.get('location_id')
+    location_name = request.form.get('location_name')
+    latitude = request.form.get('location_lat')
+    longitude = request.form.get('location_lng')
 
     # Retrieve the user and location objects
     user = crud.get_user_by_email(email)
@@ -132,12 +140,21 @@ def save_location():
     # Check if the user and location exist
     if user is not None and location is not None:
         # Add the location to the user's locations list
-        user.locations.append(location)
+        liked_location= crud.create_liked_location(user.user_id, location_id)
+        db.session.add(liked_location)
+        db.session.commit()
+        flash("Location saved successfully.")
+        return redirect('/user_profile')
+    elif location is None and user is not None:
+        new_location = crud.create_location(location_name, location_id, longitude, latitude)
+        db.session.add(new_location)
+        new_liked_location = crud.create_liked_location(user.user_id, location_id)
+        db.session.add(new_liked_location)
         db.session.commit()
         flash("Location saved successfully.")
         return redirect('/user_profile')
     else:
-        flash("Please log in to save location.")
+        flash("Request failed. Please log in to save location.")
         return redirect('/login')
     
 @app.route('/streetview', methods=['POST'])
@@ -151,6 +168,15 @@ def streetview():
     return render_template('streetview.html', google_key=API_KEY, 
                            latitude=latitude, longitude=longitude, location_name=location_name)
 
+@app.route('/logout')
+def logout():
+    """Log out a user."""
+    if 'user_email' in session:
+        session.pop('user_email')
+        flash("You have been logged out.")
+    else:
+        flash("You are not logged in.")
+    return redirect('/')
 
 
 if __name__ == "__main__":

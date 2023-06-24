@@ -1,3 +1,5 @@
+<!-- streetview html -->
+
 {% extends 'base.html' %}
 
 {% block head %}
@@ -9,7 +11,7 @@
 {% block body %}
 
 <div id="page detail">
-    <h2>Enjoy your stroll through {{ location_name }}</h2>
+    <h2>Enjoy your {{ location_name }} stroll.</h2>
 </div>
 
 <body>
@@ -17,11 +19,17 @@
     <div id="pano"></div>
 
     <!-- <div id="streetview-container"></div> -->
+    <script> 
+         const streetview_location = {lat: {{latitude}}, lng: {{longitude}}}
+         const streetview_name = "{{location_name}}"
+    </script>
 
     <script src="/static/streetview.js"></script>
 
+
+
     <script
-      src="https://maps.googleapis.com/maps/api/js?key={{google_key}}&callback=goToStreetView&v=weekly&latitudet={{latitude}}&longitude={{longitude}}"
+      src="https://maps.googleapis.com/maps/api/js?key={{google_key}}&callback=goToStreetView&v=weekly"
       defer
     ></script>
 
