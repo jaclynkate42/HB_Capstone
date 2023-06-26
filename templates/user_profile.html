@@ -9,7 +9,15 @@
 <h2> Saved Locations: </h2>
 <ul>
   {% for location in liked_locations %}
-  <li>{{ location.location_name }}</li>
+  <li>
+    <a href="https://www.google.com/maps?q=&layer=c&cbll={{ location.latitude }},{{ location.longitude }}" target="_blank">
+      {{ location.location_name }}
+    </a>
+    <form action="/remove_location" method="post">
+      <input type="hidden" name="location_id" value="{{ location.location_id }}">
+      <button type="submit">Remove</button>
+    </form>
+  </li>
   {% endfor %}
 </ul>
 {% endblock %}

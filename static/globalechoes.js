@@ -95,7 +95,17 @@ function initAutocomplete() {
           const longitude = place.geometry.location.lng();
           const location_name = place.name;
 
-          // Use the latitude and longitude for the Freesound API search
+          // Wikipedia API Request
+          // const wikiUrl = `https://en.wikipedia.org/w/api.php?origin=*&action=query&format=json&titles=${encodeURIComponent(location_name)}&prop=extracts&exintro&explaintext`;
+
+          // fetch(wikiUrl)
+          //   .then(response => response.json())
+          //   .then(wikiData => {
+          //     const page = wikiData.query.pages;
+          //     const pageId = Object.keys(page)[0];
+          //     const wikiExtract = page[pageId].extract;
+          
+              // Use the latitude and longitude for the Freesound API search
           searchSoundsByLocation(latitude, longitude, location_name);
           const url = '/search-sounds';
           const data = new URLSearchParams();
@@ -115,6 +125,8 @@ function initAutocomplete() {
 
                 const markerInfo = `
               <h1>${marker.title}</h1>
+              <p>
+              <text> test </text>
               <p>
                 <form action="/save_location" method="post">
                   <input type="hidden" name="location_id" value="${place.place_id}">

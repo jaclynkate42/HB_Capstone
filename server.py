@@ -178,6 +178,29 @@ def logout():
         flash("You are not logged in.")
     return redirect('/')
 
+@app.route('/remove_location', methods=['POST'])
+def remove_liked_location():
+    """Remove Liked_location"""
+    location_id = request.form.get('location_id')
+    email = session.get('user_email')
+    user = crud.get_user_by_email(email)
+    location = crud.get_location_by_id(location_id)
+
+        # Check if the user and location exist
+    if user is not None and location is not None:
+        # Find the Liked_location record and delete it
+        liked_location = Liked_location.query.filter_by(user_id=user.user_id, location_id=location_id).first()
+        if liked_location:
+            db.session.delete(liked_location)
+            db.session.commit()
+            flash("Location removed successfully.")
+        else:
+            flash("Location not found in your favorites.")
+    else:
+        flash("Request failed. Please log in.")
+    
+    return redirect('/user_profile')
+    
 
 if __name__ == "__main__":
     connect_to_db(app)
