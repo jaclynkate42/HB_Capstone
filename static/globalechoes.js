@@ -96,63 +96,68 @@ function initAutocomplete() {
           const location_name = place.name;
 
           // Wikipedia API Request
-          // const wikiUrl = `https://en.wikipedia.org/w/api.php?origin=*&action=query&format=json&titles=${encodeURIComponent(location_name)}&prop=extracts&exintro&explaintext`;
+          const wikiUrl = `https://en.wikipedia.org/w/api.php?origin=*&action=query&format=json&titles=${encodeURIComponent(location_name)}&prop=extracts&exintro&explaintext`;
 
-          // fetch(wikiUrl)
-          //   .then(response => response.json())
-          //   .then(wikiData => {
-          //     const page = wikiData.query.pages;
-          //     const pageId = Object.keys(page)[0];
-          //     const wikiExtract = page[pageId].extract;
+          fetch(wikiUrl)
+            .then(response => response.json())
+            .then(wikiData => {
+              const page = wikiData.query.pages;
+              const pageId = Object.keys(page)[0];
+              const wikiExtract = page[pageId].extract;
           
               // Use the latitude and longitude for the Freesound API search
-          searchSoundsByLocation(latitude, longitude, location_name);
-          const url = '/search-sounds';
-          const data = new URLSearchParams();
-          data.append('latitude', latitude);
-          data.append('longitude', longitude);
-          data.append('location_name', location_name)
+              searchSoundsByLocation(latitude, longitude, location_name);
+              const url = '/search-sounds';
+              const data = new URLSearchParams();
+              data.append('latitude', latitude);
+              data.append('longitude', longitude);
+              data.append('location_name', location_name);
 
-            fetch(url, {
-              method: 'POST',
-              body: data,
-            })
-              .then(response => response.json())
-              .then(response => {
-                // Process the server response and handle the retrieved sounds
-                console.log(response)
-                const location_sound = handleSoundResults(response, latitude, longitude);
-
-                const markerInfo = `
-              <h1>${marker.title}</h1>
-              <p>
-              <text> test </text>
-              <p>
-                <form action="/save_location" method="post">
-                  <input type="hidden" name="location_id" value="${place.place_id}">
-                  <input type="hidden" name="location_name" value="${place.name}">
-                  <input type="hidden" name="location_lat" value="${place.geometry.location.lat()}">
-                  <input type="hidden" name="location_lng" value="${place.geometry.location.lng()}">
-                  <button type="submit">Save Location</button>
-                </form>
-
-                <button type="button" onclick="goToStreetView(${place.geometry.location.lat()}, ${place.geometry.location.lng()})">Explore Street View</button>
-
-          ${location_sound}
-        `;
-
-                const infoWindow = new google.maps.InfoWindow({
-                  content: markerInfo,
-                  maxWidth: 300,
-                });
-                infoWindow.open(map, marker);
+              fetch(url, {
+                method: 'POST',
+                body: data,
               })
-              .catch(error => {
-                console.log('Error:', error);
-              });
-
-          }
-        });
+                .then(response => response.json())
+                .then(response => {
+                  // Process the server response and handle the retrieved sounds
+                  console.log(response)
+                  const location_sound = handleSoundResults(response, latitude, longitude);
+      
+                  const markerInfo = `
+                    <h1>${marker.title}</h1>
+                    <p>
+                    <form action="/save_location" method="post">
+                      <input type="hidden" name="location_id" value="${place.place_id}">
+                      <input type="hidden" name="location_name" value="${place.name}">
+                      <input type="hidden" name="location_lat" value="${place.geometry.location.lat()}">
+                      <input type="hidden" name="location_lng" value="${place.geometry.location.lng()}">
+                      <button type="submit">Save Location</button>
+                    </form>
+                    <button type="button" onclick="goToStreetView(${place.geometry.location.lat()}, ${place.geometry.location.lng()})">Explore Street View</button>
+                    
+                    
+                    
+                    <p>${wikiExtract}</p>
+                    ${location_sound}
+                  `;
+      
+                  const infoWindow = new google.maps.InfoWindow({
+                    content: markerInfo,
+                    maxWidth: 300,
+                  });
+                  infoWindow.open(map, marker);
+                })
+                .catch(error => {
+                  console.log('Error:', error);
+                });
+            })
+            .catch(error => {
+              console.log('Error:', error);
+            });
+      
+        }
+      });
+      
 
       if (place.geometry.viewport) {
         // Only geocodes have viewport.
