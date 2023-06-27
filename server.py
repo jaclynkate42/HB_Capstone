@@ -14,11 +14,24 @@ app.jinja_env.undefined = StrictUndefined
 API_KEY = os.environ['GOOGLE_MAPS_KEY']
 FS_API_KEY = os.environ['FREESOUND_API_KEY']
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def homepage():
     """View homepage"""
+    logged_in_email = session.get("user_email")
+    user = crud.get_user_by_email(logged_in_email)
 
-    return render_template('homepage.html', google_key=API_KEY)
+    return render_template('homepage.html', google_key=API_KEY, user=user)
+
+@app.route('/handle_saved_locations', methods=['GET'])
+def data():
+    logged_in_email = session.get("user_email")
+    user = crud.get_user_by_email(logged_in_email)
+    user_saved_locations = user.locations 
+
+    user_data = [location.location_id for location in user_saved_locations]
+    
+    return jsonify(user_data)
+    
 
 @app.route('/create_account')
 def create_account():

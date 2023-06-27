@@ -104,7 +104,7 @@ function initAutocomplete() {
               const page = wikiData.query.pages;
               const pageId = Object.keys(page)[0];
               const wikiExtract = page[pageId].extract;
-          
+
               // Use the latitude and longitude for the Freesound API search
               searchSoundsByLocation(latitude, longitude, location_name);
               const url = '/search-sounds';
@@ -122,42 +122,55 @@ function initAutocomplete() {
                   // Process the server response and handle the retrieved sounds
                   console.log(response)
                   const location_sound = handleSoundResults(response, latitude, longitude);
-      
-                  const markerInfo = `
+
+                  fetch('/handle_saved_locations')
+                    .then(response => response.json())
+                    .then(data => {
+                      let locationIds = data;
+                      let saveLocationButton = '';
+                      if (locationIds.includes(place.place_id)) {
+                        saveLocationButton = '<button type="button" disabled>Location Saved</button>';
+                      } else {
+                        saveLocationButton = `
+                              <form action="/save_location" method="post">
+                                <input type="hidden" name="location_id" value="${place.place_id}">
+                                <input type="hidden" name="location_name" value="${place.name}">
+                                <input type="hidden" name="location_lat" value="${place.geometry.location.lat()}">
+                                <input type="hidden" name="location_lng" value="${place.geometry.location.lng()}">
+                                <button type="submit">Save Location2</button>
+                              </form>`;
+                      }
+
+                      const markerInfo = `
                     <h1>${marker.title}</h1>
+                    <details>
+                      <summary>Learn More</summary>
+                      <p>${wikiExtract}</p>
+                    </details>
                     <p>
-                    <form action="/save_location" method="post">
-                      <input type="hidden" name="location_id" value="${place.place_id}">
-                      <input type="hidden" name="location_name" value="${place.name}">
-                      <input type="hidden" name="location_lat" value="${place.geometry.location.lat()}">
-                      <input type="hidden" name="location_lng" value="${place.geometry.location.lng()}">
-                      <button type="submit">Save Location</button>
-                    </form>
+                    ${saveLocationButton}
                     <button type="button" onclick="goToStreetView(${place.geometry.location.lat()}, ${place.geometry.location.lng()})">Explore Street View</button>
-                    
-                    
-                    
-                    <p>${wikiExtract}</p>
+
                     ${location_sound}
                   `;
-      
-                  const infoWindow = new google.maps.InfoWindow({
-                    content: markerInfo,
-                    maxWidth: 300,
-                  });
-                  infoWindow.open(map, marker);
+
+                      const infoWindow = new google.maps.InfoWindow({
+                        content: markerInfo,
+                        maxWidth: 300,
+                      });
+                      infoWindow.open(map, marker);
+                    })
+                    .catch(error => {
+                      console.log('Error:', error);
+                    });
                 })
                 .catch(error => {
                   console.log('Error:', error);
                 });
-            })
-            .catch(error => {
-              console.log('Error:', error);
-            });
-      
-        }
-      });
-      
+
+              })}
+    });
+
 
       if (place.geometry.viewport) {
         // Only geocodes have viewport.
