@@ -66,6 +66,8 @@ def connect_to_db(flask_app, db_uri="postgresql:///soundscape", echo=True):
     print("Connected to the db!")
 
 
+
+
 if __name__ == "__main__":
     from server import app
 

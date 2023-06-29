@@ -31,7 +31,7 @@ def data():
     user_data = [location.location_id for location in user_saved_locations]
     
     return jsonify(user_data)
-    
+
 
 @app.route('/create_account')
 def create_account():
@@ -87,14 +87,22 @@ def user_profile():
 
     logged_in_email = session.get("user_email")
     user = crud.get_user_by_email(logged_in_email)
+
+    if user is None:
+        flash("You need to be logged in to view this page.")
+        return redirect('/login')
+
     user_id = User.user_id
     liked_locations = user.locations
-    # liked_locations = Liked_location.query.filter_by(user_id=user_id).all()
     print(liked_locations)
 
+    location_images = {}  # Initialize an empty dictionary
 
-    return render_template('user_profile.html', user=user, liked_locations=liked_locations)
-
+    for location in liked_locations:
+        image_url = crud.get_random_photo(location.location_name)
+        location_images[location] = image_url  # Add the location and its image URL to the dictionary
+    
+    return render_template('user_profile.html', user=user, location_images=location_images, liked_locations=liked_locations)
 
 @app.route('/search-sounds', methods=['POST'])
 def search_sounds():

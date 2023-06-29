@@ -4,37 +4,34 @@
 {% block title %}Create Account{% endblock %}
 
 {% block body %}
-<h1>Create Your Account</h1>
-
-<form action="/create_account" method="POST">
-    <p>
-        <label for="first_name">First Name</label>
-        <input type="text" id="first_name" name="first_name">
-    </p>
-
-    <p>
-        <label for="last_name">Last Name</label>
-        <input type="text" id="last_name" name="last_name">
-    </p>
-
-    <p>
-        <label for="email">Email</label>
-        <input type="text" id="email" name="email">
-    </p>
-
-    <p>
-        <label for="user_name">Username</label>
-        <input type="text" id="user_name" name="user_name">
-    </p>
-
-    <p>
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password">
-    </p>
-
-    <p>
-        <input type="submit" value="Create Account">
-    </p>
+<div class="login-container">
+  <h1 class="login-heading">Create Your Account</h1>
+  <form action="/create_account" method="POST" class="login-form">
+    <div class="form-group">
+        <label for="first_name" class="form-label">First Name</label>
+        <input type="text" class="form-input" id="first_name" name="first_name" required>
+    </div>
+    <div class="form-group">
+        <label for="last_name" class="form-label">Last Name</label>
+        <input type="text" class="form-input" id="last_name" name="last_name" required>
+    </div>
+    <div class="form-group">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-input" id="email" name="email" required>
+    </div>
+    <div class="form-group">
+        <label for="user_name" class="form-label">Username</label>
+        <input type="text" class="form-input" id="user_name" name="user_name" required>
+    </div>
+    <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-input" id="password" name="password" required>
+    </div>
+    <button type="submit" class="submit-btn">Create Account</button>
+  </form>
+  <p class="signup-link">
+    <a href="/login">Already have an account? Sign in here!</a>
+  </p>
 </form>
-
+</div>
 {% endblock %}

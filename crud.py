@@ -2,6 +2,30 @@
 
 from model import db, User, Location, Liked_location, connect_to_db
 import model 
+import os
+import requests
+
+US_ACCESS_KEY = os.environ['UPSPLASH_ACCESS_KEY']
+
+def get_random_photo(location):
+    url = "https://api.unsplash.com/photos/random"
+    headers = {
+        "Authorization": f"Client-ID {US_ACCESS_KEY}"
+    }
+    params = {
+        'query': location,
+        'orientation': 'landscape',
+        'count': 1,
+    }
+    response = requests.get(url, headers=headers, params=params)
+
+    if response.status_code == 200:  # Successful request
+        data = response.json()
+        return data[0]["urls"]["regular"]
+    else:
+        print(f"Unsplash API request failed with status code {response.status_code}")
+        return None
+
 
 def create_user(email, password, user_name, first_name, last_name):
     """Create and return a new user."""
