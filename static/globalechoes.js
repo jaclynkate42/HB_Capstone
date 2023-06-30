@@ -169,18 +169,26 @@ function initAutocomplete() {
                       const google_key = document.body.dataset.googleKey;
                       const streetViewImgUrl = `https://maps.googleapis.com/maps/api/streetview?size=600x300&location=${latitude},${longitude}&key=${google_key}`;
 
+                      let wikiContent = '';
+                      if (wikiExtract) {
+                        wikiContent = wikiExtract;
+                      } else {
+                        wikiContent = '<em>Looks like our sources had no further information. Sorry about that!</em>';
+                      }
+                      
                       const markerInfo = `
                         <div class="info-window">
                           <h3 class="info-window-title">${marker.title}</h3>
                           ${saveLocationButton}
                           <p>
                           <img class="info-window-img" src="${streetViewImgUrl}" alt="Street view of ${marker.title}" />
-                          <p>
-                          <button type="button" onclick="goToStreetView(${place.geometry.location.lat()}, ${place.geometry.location.lng()})">Explore Street View</button>
+                          <span class="info-icon">(i) How do I begin my virtual stroll?
+                          <span class="tooltip-text">Use the soundscapes feature below to select a background ambient sound of your choice, then drag the yellow pegman to a place on the map you want to take your virtual walk!</span>
+                          </span>                          
                           <p>${location_sound}
                           <details class="info-window-details">
-                            <summary class="info-window-summary">Learn More</summary>
-                            <p>${wikiExtract}</p>
+                            <summary class="info-window-summary">Learn More About This Location</summary>
+                            <p>${wikiContent}</p>
                           </details>
                         </div>
                       `;
@@ -188,7 +196,7 @@ function initAutocomplete() {
 
                       const infoWindow = new google.maps.InfoWindow({
                         content: markerInfo,
-                        maxWidth: 600,
+                        maxWidth: 800,
                       });
                       infoWindow.open(map, marker);
                     })

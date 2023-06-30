@@ -31,3 +31,6 @@
     //   console.log("Location Name:", streetview_name);
     
     // }
+
+    <button type="button" onclick="goToStreetView(${place.geometry.location.lat()}, ${place.geometry.location.lng()})">Explore Street View</button>
+                          

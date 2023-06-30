@@ -97,3 +97,146 @@ body::before {
     text-align: center;
     padding: 20px;
 }
+
+.info-icon {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+.tooltip-text {
+visibility: hidden;
+width: 300px;
+background-color: #555;
+color: #fff;
+text-align: center; /* Center the text */
+padding: 5px 0;
+border-radius: 6px;
+
+/* Position the tooltip text */
+position: absolute;
+z-index: 1;
+top: -150%; /* Place the tooltip above the icon */
+left: 50%;
+transform: translateX(-50%); /* Center the tooltip horizontally */
+
+/* Fade in tooltip */
+opacity: 0;
+transition: opacity 0.3s;
+}
+
+.info-icon:hover .tooltip-text {
+visibility: visible;
+opacity: 1;
+}
+
+/* styles.css */
+
+/* ... */
+
+.container {
+margin-top: 50px;
+}
+
+.profile-header {
+text-align: center;
+margin-bottom: 30px;
+}
+
+.profile-title {
+font-size: 2.5em;
+color: #333;
+text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dropdown {
+margin-bottom: 20px;
+}
+
+.carousel-inner {
+object-fit: cover;
+height: 100%;
+}
+
+.carousel-item {
+    height: 500px; /* Adjust the height to your desired size */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+.carousel-image {
+    object-fit: cover;
+    height: 100%; /* Adjust the height to your desired size */
+    width: 100%;
+}
+
+.carousel-caption {
+background-color: rgba(0, 0, 0, 0.5);
+padding: 10px;
+}
+
+.carousel-title {
+font-size: 1.5em;
+color: #fff;
+text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+width: 5%;
+opacity: 0.7;
+background-color: rgba(0, 0, 0, 0.5);
+border: none;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+background-color: #fff;
+border-radius: 50%;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+opacity: 1;
+}
+
+.visually-hidden {
+position: absolute;
+left: -9999px;
+}
+
+.dropdown-menu .remove-button {
+    color: #fff;
+    background-color: #E42256;
+    border-color: #E42256;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .dropdown-menu .remove-button:hover {
+    background-color: #c11d4d;
+    border-color: #c11d4d;
+  }
+
+  .location-item {
+    display: flex;
+    align-items: center;
+  }
+  
+  .location-info {
+    flex-grow: 1;
+  }
+  
+  .remove-button-container {
+    padding-left: 5px;
+    padding-right: 10px;
+
+  }
+  
+  .btn-secondary {
+    border-radius: 0;
+  }

@@ -1,63 +1,60 @@
 <!-- user_profile.html -->
 
 {% extends 'base.html' %}
-{% block title %}Earth Echoes Profile{% endblock %}
+{% block title %}Global Echoes Profile{% endblock %}
 
 {% block body %}
 
-<h1>Hello {{ user.first_name }}</h1>
-
-<div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-    Saved locations:
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    {% for location in liked_locations %}
-    <li>
-      <a class="dropdown-item" href="https://www.google.com/maps?q=&layer=c&cbll={{ location.latitude }},{{ location.longitude }}" target="_blank">
-        {{ location.location_name }}
-      </a>
-      <form action="/remove_location" method="post">
-        <input type="hidden" name="location_id" value="{{ location.location_id }}">
-        <button type="submit" class="btn btn-danger">Remove</button>
-      </form>
-    </li>
-    {% endfor %}
-  </ul>
-</div>
-
-<div id="locationCarousel" class="carousel slide mx-auto" data-bs-ride="carousel" style="width: 80%; aspect-ratio: 2/1; max-height: 100vh;">
-  <div class="carousel-inner">
-    {% for location, image_url in location_images.items() %}
-    <div class="carousel-item {% if loop.first %}active{% endif %}">
-        <img src="{{ image_url }}" class="d-block w-100" style="object-fit: cover; max-height: 75vh;" alt="{{ location.location_name }}">
-        <div class="carousel-caption d-none d-md-block text-start text-md-left" style="top: 10%; transform: translateY(-10%);">
-            <h2 style="font-size: 2em; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">{{ location.location_name }}</h2>
-        </div>
-    </div>
-{% endfor %}
+<div class="container">
+  <div class="profile-header">
+    <h1 class="profile-title">Hello, {{ user.first_name }}!</h1>
   </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#locationCarousel" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#locationCarousel" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
+
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+      Saved Locations
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      {% for location in liked_locations %}
+      <li>
+        <div class="location-item">
+          <div class="location-info">
+            <a class="dropdown-item" href="https://www.google.com/maps?q=&layer=c&cbll={{ location.latitude }},{{ location.longitude }}" target="_blank">
+              {{ location.location_name }}
+            </a>
+          </div>
+          <div class="remove-button-container">
+            <form action="/remove_location" method="post">
+              <input type="hidden" name="location_id" value="{{ location.location_id }}">
+              <button type="submit" class="btn btn-danger remove-button">Remove</button>
+            </form>
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div id="locationCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      {% for location, image_url in location_images.items() %}
+      <div class="carousel-item {% if loop.first %}active{% endif %}">
+        <img src="{{ image_url }}" class="carousel-image" alt="{{ location.location_name }}">
+        <div class="carousel-caption">
+          <h2 class="carousel-title">{{ location.location_name }}</h2>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#locationCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#locationCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
 </div>
 
-<!-- <ul>
-  {% for location in liked_locations %}
-  <li>
-    <a href="https://www.google.com/maps?q=&layer=c&cbll={{ location.latitude }},{{ location.longitude }}" target="_blank">
-      {{ location.location_name }}
-    </a>
-    <form action="/remove_location" method="post">
-      <input type="hidden" name="location_id" value="{{ location.location_id }}">
-      <button type="submit">Remove</button>
-    </form>
-  </li>
-  {% endfor %}
-</ul>
-{% endblock %} -->
+{% endblock %}
