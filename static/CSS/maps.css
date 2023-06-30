@@ -1,13 +1,18 @@
 /* maps.css */
 
-html,
-body {
+html, body {
   margin: 0;
-  width: 100%;
   height: 100%;
+  width: 100%;
 }
 
-.map,
+.map {
+  width: 67%;
+  height: 60%;
+  margin: 0 auto; /* center the map */
+  border: 3px solid rgba(53, 52, 52, 0.346);
+}
+
 #map {
   width: 100%;
   height: 100%;
@@ -17,4 +22,59 @@ body {
   float: left;
   height: 100%;
   width: 100%;
+}
+
+.info-window {
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 300px;
+}
+
+.info-window .info-window-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 1px;
+  color: #333333;
+}
+
+.info-window .info-window-img {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.info-window .save-location-link {
+  color: #18465a;
+  font-size: 14px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.info-window .info-window-details {
+  margin-top: 10px;
+}
+
+.info-window .info-window-summary {
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #666666;
+  transition: color 0.3s ease;
+}
+
+.info-window .info-window-summary:focus {
+  outline: none;
+}
+
+.info-window .info-window-summary:hover {
+  color: #333333;
+  text-decoration: underline;
+}
+
+.info-window .info-window-details p {
+  margin-top: 5px;
+  color: #666666;
 }

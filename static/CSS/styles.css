@@ -3,6 +3,24 @@
 body {
     font-family: 'Roboto', sans-serif;
     color: #363636;
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/static/PICS/san.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: saturate(90%);
+    opacity: 0.7;  /* Adjusts the opacity, 0 is fully transparent and 1 is fully opaque */
+    z-index: -1; 
 }
 
 .navbar {
@@ -65,4 +83,17 @@ body {
   .signup-link a {
     color: #004B8D;
   }
+
+  #pac-input {
+    width: 50%; /* Adjust width to be smaller than container */
+    margin: auto; /* Center horizontally */
+  }
   
+  #welcome-wrapper {
+    width: 67%;
+    background-color: rgba(128, 128, 128, 0);
+    margin: 0 auto 30px; /* auto for horizontal centering, 30px for bottom margin */
+    margin-top: 50px;
+    text-align: center;
+    padding: 20px;
+}

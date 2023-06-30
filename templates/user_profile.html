@@ -30,7 +30,7 @@
   <div class="carousel-inner">
     {% for location, image_url in location_images.items() %}
     <div class="carousel-item {% if loop.first %}active{% endif %}">
-        <img src="{{ image_url }}" class="d-block w-100" style="object-fit: cover; opacity: 0.8; max-height: 75vh;" alt="{{ location.location_name }}">
+        <img src="{{ image_url }}" class="d-block w-100" style="object-fit: cover; max-height: 75vh;" alt="{{ location.location_name }}">
         <div class="carousel-caption d-none d-md-block text-start text-md-left" style="top: 10%; transform: translateY(-10%);">
             <h2 style="font-size: 2em; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">{{ location.location_name }}</h2>
         </div>

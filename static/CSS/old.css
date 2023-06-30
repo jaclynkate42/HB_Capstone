@@ -1,0 +1,29 @@
+.info-window {
+    color: green;
+    font-size: 16px;
+  }
+  
+  .info-window-title {
+    /* styles for the title */
+    margin-bottom: 1px;
+  }
+  
+  .info-window-details {
+    /* styles for the details */
+  }
+  
+  .info-window-summary {
+    font-weight: bold;
+  }
+  
+  .info-window-img {
+    width: 400px;  /* adjust as needed */
+    height: auto;  /* maintain aspect ratio */
+  }
+  
+  .save-location-link {
+    font-size: 12px; /* Adjust the font size as needed */
+    margin-bottom: 10px; /* Adjust the margin as desired */
+    margin-top: 1px;
+  }
+  

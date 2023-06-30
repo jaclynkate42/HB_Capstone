@@ -25,6 +25,21 @@ def get_random_photo(location):
     else:
         print(f"Unsplash API request failed with status code {response.status_code}")
         return None
+    
+def get_window_photo(location):
+    url = "https://api.unsplash.com/photos/random"
+    headers = {
+        "Authorization": f"Client-ID {US_ACCESS_KEY}"
+    }
+    params = {
+        'query': location,
+        'orientation': 'landscape',
+        'count': 1,
+    }
+    response = requests.get(url, headers=headers, params=params)
+    data = response.json()
+    return data[0]["urls"]["small"]
+
 
 
 def create_user(email, password, user_name, first_name, last_name):

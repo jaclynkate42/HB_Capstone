@@ -221,6 +221,24 @@ def remove_liked_location():
         flash("Request failed. Please log in.")
     
     return redirect('/user_profile')
+
+@app.route('/get_street_view', methods=['GET'])
+def get_street_view():
+    lat = request.args.get('lat')
+    lng = request.args.get('lng')
+
+    street_view_url = f"https://maps.googleapis.com/maps/api/streetview?size=600x300&location={lat},{lng}&heading=151.78&pitch=-0.76&key={API_KEY}"
+
+    # Here we fetch the image from Google's API and return it.
+    response = requests.get(street_view_url)
+
+    return response.content, response.status_code
+
+@app.route('/get_window_photo')
+def get_photo_route():
+    location = request.args.get('location')
+    photo_url = get_random_photo(location)
+    return jsonify(photo_url)
     
 
 if __name__ == "__main__":
