@@ -1,11 +1,37 @@
 /* styles.css */
 
+@font-face {
+    font-family: 'ropabilly';
+    src: url('/static/fonts/RopaBillyRegular.ttf') format('truetype');
+  }
+
+  @font-face {
+    font-family: 'marvel';
+    src: url('/static/fonts/captain-marvel-font/Captainmarvel-anm9.ttf') format('truetype');
+  }
+
+  @font-face {
+    font-family: 'geddes';
+    src: url('/static/fonts/geddes-font/GeddesBold-D8dD.ttf') format('truetype');
+  }
+
+  @font-face {
+    font-family: 'sky';
+    src: url('/static/fonts/skyfont-font/Skyfont-x0Mq.otf') format('opentype');
+  }
+
+
+  @font-face {
+    font-family: 'double';
+    src: url('/static/fonts/double-diamond-font/DoubleDiamond-DOVz1.ttf') format('truetype');
+  }
+
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     color: #363636;
     position: relative;
     overflow: hidden;
-    background: #fff;
+    background: #ffffff;
 }
 
 body::before {
@@ -18,10 +44,31 @@ body::before {
     background-image: url('/static/PICS/san.jpg');
     background-repeat: no-repeat;
     background-size: cover;
-    filter: saturate(90%);
-    opacity: 0.7;  /* Adjusts the opacity, 0 is fully transparent and 1 is fully opaque */
+    filter: saturate(80%);
+    opacity: 0.4;  /* Adjusts the opacity, 0 is fully transparent and 1 is fully opaque */
     z-index: -1; 
 }
+
+.user-profile-body {
+    background-image: url('/static/PICS/wall.jpg'); /* Replace with your desired background image path */
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: saturate(90%);
+    opacity: 1;
+    z-index: -1;
+  }
+
+  .user-profile-body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: none;  /* Remove the background image */
+    /* Add any additional styles for the user_profile background here */
+}
+  
 
 .navbar {
     background-color: #ffffff;
@@ -30,8 +77,10 @@ body::before {
 }
 
 .navbar-brand {
-    font-family: 'Playfair Display', serif;
+    font-family: 'marvel', sans-serif;
     color: #000000;
+    font-weight: bold;
+    font-size: 22px;
 }
 
 .navbar-nav .nav-link {
@@ -98,37 +147,44 @@ body::before {
     padding: 20px;
 }
 
+.title {
+    margin-bottom: 20px; /* Add margin-bottom for spacing */
+  }
+
 .info-icon {
     position: relative;
-    display: inline-block;
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
     cursor: pointer;
   }
   
-.tooltip-text {
-visibility: hidden;
-width: 300px;
-background-color: #555;
-color: #fff;
-text-align: center; /* Center the text */
-padding: 5px 0;
-border-radius: 6px;
-
-/* Position the tooltip text */
-position: absolute;
-z-index: 1;
-top: -150%; /* Place the tooltip above the icon */
-left: 50%;
-transform: translateX(-50%); /* Center the tooltip horizontally */
-
-/* Fade in tooltip */
-opacity: 0;
-transition: opacity 0.3s;
-}
-
-.info-icon:hover .tooltip-text {
-visibility: visible;
-opacity: 1;
-}
+  .tooltip-text {
+    visibility: hidden;
+    width: 300px;
+    background-color: #555;
+    color: #fff;
+    text-align: center; /* Center the text */
+    padding: 5px 0;
+    border-radius: 6px;
+  
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    top: -150%; /* Place the tooltip above the icon */
+    left: 50%;
+    transform: translateX(-50%); /* Center the tooltip horizontally */
+  
+    /* Fade in tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .info-icon:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
+  
 
 /* styles.css */
 
@@ -145,6 +201,9 @@ margin-bottom: 30px;
 
 .profile-title {
 font-size: 2.5em;
+font-family: 'double', sans-serif;
+font-weight: bold;
+font-size: 80px;
 color: #333;
 text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
@@ -207,6 +266,10 @@ position: absolute;
 left: -9999px;
 }
 
+.dropdown-menu {
+    border-radius: .1; /* Set border-radius to 0 for square edges */
+}
+
 .dropdown-menu .remove-button {
     color: #fff;
     background-color: #E42256;
@@ -238,5 +301,45 @@ left: -9999px;
   }
   
   .btn-secondary {
-    border-radius: 0;
+    border-radius: .1;
   }
+
+  /* styles.css */
+
+.flash-messages {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .flash-message {
+    padding: 10px 20px;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .flash-message.success {
+    background-color: #c4e5c1;
+    color: #377f51;
+  }
+  
+  .flash-message.error {
+    background-color: #f2b5b5;
+    color: #d13939;
+  }
+  
+  .flash-message.warning {
+    background-color: #ffe4a1;
+    color: #c98f0a;
+  }
+  
+  .flash-message.info {
+    background-color: #b5d8f2;
+    color: #2a6496;
+  }
+  

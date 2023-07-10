@@ -1,17 +1,23 @@
 <!-- user_profile.html -->
 
 {% extends 'base.html' %}
+
 {% block title %}Global Echoes Profile{% endblock %}
 
-{% block body %}
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+{% endblock %}
 
-<div class="container">
+{% block body %}
+<body class="user-profile-body">
+  <div class="container">
   <div class="profile-header">
-    <h1 class="profile-title">Hello, {{ user.first_name }}!</h1>
+    <h1 class="profile-title">Bon Voyage, {{ user.first_name }}!</h1>
   </div>
 
   <div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+      aria-expanded="false">
       Saved Locations
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -19,7 +25,9 @@
       <li>
         <div class="location-item">
           <div class="location-info">
-            <a class="dropdown-item" href="https://www.google.com/maps?q=&layer=c&cbll={{ location.latitude }},{{ location.longitude }}" target="_blank">
+            <a class="dropdown-item"
+              href="https://www.google.com/maps?q=&layer=c&cbll={{ location.latitude }},{{ location.longitude }}"
+              target="_blank">
               {{ location.location_name }}
             </a>
           </div>
@@ -32,29 +40,40 @@
         </div>
       </li>
       {% endfor %}
+
     </ul>
   </div>
 
-  <div id="locationCarousel" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      {% for location, image_url in location_images.items() %}
-      <div class="carousel-item {% if loop.first %}active{% endif %}">
+ <div id="locationCarousel" class="carousel slide" data-bs-ride="carousel">
+  <ol class="carousel-indicators">
+    {% for location, _ in location_images.items() %}
+      <li data-bs-target="#locationCarousel" data-bs-slide-to="{{ loop.index0 }}" {% if loop.first %}class="active"{% endif %}></li>
+    {% endfor %}
+  </ol>
+  <div class="carousel-inner">
+    {% set counter = 0 %}
+    {% for location, image_url in location_images.items() %}
+      <div class="carousel-item {% if counter == 0 %}active{% endif %}">
         <img src="{{ image_url }}" class="carousel-image" alt="{{ location.location_name }}">
         <div class="carousel-caption">
           <h2 class="carousel-title">{{ location.location_name }}</h2>
         </div>
       </div>
-      {% endfor %}
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#locationCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#locationCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
+      {% set counter = counter + 1 %}
+      {% if counter >= location_images|length %}
+        {% set counter = 0 %}
+      {% endif %}
+    {% endfor %}
   </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#locationCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#locationCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
 </div>
+
 
 {% endblock %}

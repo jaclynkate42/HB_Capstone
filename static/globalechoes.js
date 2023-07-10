@@ -17,8 +17,8 @@ function handleSoundResults(response, latitude, longitude) {
   <summary class="info-window-summary">Discover Soundscapes</summary>`;
   // Add the sound results to the info window content
   for (const sound of response) {
-    content += `<p>${sound.name}</p>`;
-    content += `<audio controls> <source src="${sound.playable_link}"></audio>`
+    content += `<p class="freesound-title">${sound.name}</p>`;
+    content += `<audio controls> <source src="${sound.playable_link}"></audio>`;
   }
   content += `</details>`;
   return content;
@@ -182,9 +182,7 @@ function initAutocomplete() {
                           ${saveLocationButton}
                           <p>
                           <img class="info-window-img" src="${streetViewImgUrl}" alt="Street view of ${marker.title}" />
-                          <span class="info-icon">(i) How do I begin my virtual stroll?
-                          <span class="tooltip-text">Use the soundscapes feature below to select a background ambient sound of your choice, then drag the yellow pegman to a place on the map you want to take your virtual walk!</span>
-                          </span>                          
+                                                    
                           <p>${location_sound}
                           <details class="info-window-details">
                             <summary class="info-window-summary">Learn More About This Location</summary>

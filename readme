@@ -1,0 +1,33 @@
+# Global Echoes
+
+Global Echoes is a web application that brings the wonders of travel to your fingertips, allowing users to explore stunning panoramas and immersive soundscapes from around the world.
+
+## Features
+
+- Virtual sight and sound: Experience captivating imagery and authentic soundscapes from diverse global locations.
+- Interactive maps: Utilize the Google Maps API to navigate and explore different destinations with ease.
+- Save and discover: Save your favorite locations to create a personalized travel bucket list.
+- Explore cultures: Learn about different cultures through descriptive overviews accompanying each location.
+
+## Technologies Used
+
+- HTML, CSS, and JavaScript: Front-end development languages for building the user interface and interactivity.
+- Google Maps API: Integration of interactive maps for navigation and exploration.
+- Freesound API: Incorporation of authentic soundscapes to enhance the immersive experience.
+
+## Installation
+
+1. Clone the repository: `git clone https://github.com/your-username/global-echoes.git`
+2. Open the project directory: `cd global-echoes`
+3. Open `index.html` in your preferred web browser.
+
+## Usage
+
+- Use the search functionality to find specific locations or explore by region.
+- Browse through the selected locations and click on them to view the corresponding imagery, soundscapes, and additional information. 
+- Save locations of interest to your personal collection by clicking the "Save Location" button.
+
+
+## Contributing
+
+Contributions to enhance Global Echoes are welcome. If you find any bugs or have suggestions for improvements, please send a messsage.

@@ -79,7 +79,7 @@ def handle_login():
     else:
         session['user_email'] = user.email
         flash("Welcome. Let's start your audial adventure.")
-    return redirect('/user_profile')
+    return redirect('/')
 
 @app.route('/user_profile', methods=["POST", "GET"])
 def user_profile():

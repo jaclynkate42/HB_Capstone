@@ -10,7 +10,7 @@ html, body {
   width: 67%;
   height: 60%;
   margin: 0 auto; /* center the map */
-  border: 3px solid rgba(53, 52, 52, 0.346);
+  border: 15px solid rgba(53, 52, 52, 0.731);
 }
 
 #map {
@@ -78,3 +78,8 @@ html, body {
   margin-top: 5px;
   color: #666666;
 }
+
+.freesound-title {
+  margin-top: 25px;
+}
+
